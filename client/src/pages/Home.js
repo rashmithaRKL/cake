@@ -1,146 +1,131 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import gsap from 'gsap';
+import { Button } from '../components/ui';
+import { fadeUpAnimation, initScrollAnimations } from '../utils/animations';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
 
 const Home = () => {
-  const heroRef = useRef(null);
-  const videoRef = useRef(null);
+  const controls = useAnimation();
 
   useEffect(() => {
-    // GSAP animations
-    const tl = gsap.timeline();
-    
-    tl.from(heroRef.current.querySelector('.hero-title'), {
-      y: 100,
-      opacity: 0,
-      duration: 1,
-      ease: 'power4.out'
-    })
-    .from(heroRef.current.querySelector('.hero-subtitle'), {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      ease: 'power4.out'
-    }, '-=0.5')
-    .from(heroRef.current.querySelector('.hero-cta'), {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power4.out'
-    }, '-=0.5');
-
-    // Initialize scroll animations
-    gsap.utils.toArray('.scroll-reveal').forEach(element => {
-      gsap.from(element, {
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 80%',
-          end: 'top 20%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out'
-      });
-    });
-  }, []);
-
-  const featuredProducts = [
-    {
-      id: 1,
-      name: 'Birthday Special Cake',
-      image: 'https://images.pexels.com/photos/1721934/pexels-photo-1721934.jpeg',
-      price: 49.99,
-      category: 'birthday'
-    },
-    {
-      id: 2,
-      name: 'Wedding Elegance',
-      image: 'https://images.pexels.com/photos/1702373/pexels-photo-1702373.jpeg',
-      price: 149.99,
-      category: 'wedding'
-    },
-    {
-      id: 3,
-      name: 'Custom Party Cake',
-      image: 'https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg',
-      price: 79.99,
-      category: 'custom'
-    }
-  ];
+    initScrollAnimations();
+    controls.start({ opacity: 1, y: 0 });
+  }, [controls]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      
       {/* Hero Section */}
-      <section 
-        ref={heroRef}
-        className="relative h-screen flex items-center justify-center overflow-hidden"
+      <motion.section
+        className="relative h-screen flex items-center justify-center bg-gradient-to-r from-primary-600 to-primary-800 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
       >
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute w-full h-full object-cover"
-        >
-          <source src="/assets/hero-video.mp4" type="video/mp4" />
-        </video>
-        
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        
-        <div className="relative z-10 text-center text-white px-4">
-          <h1 className="hero-title font-['Playfair_Display'] text-5xl md:text-7xl font-bold mb-6">
-            Sweet Moments, <br />
-            Perfect Celebrations
-          </h1>
-          <p className="hero-subtitle text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-            Crafting delicious cakes and beautiful decorations for your special occasions
-          </p>
+        <div className="absolute inset-0">
           <motion.div
-            className="hero-cta"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="absolute inset-0 bg-black opacity-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            transition={{ duration: 1 }}
+          />
+          <motion.img
+            src="/hero-bg.jpg"
+            alt="Background"
+            className="w-full h-full object-cover"
+            initial={{ scale: 1.2 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5 }}
+          />
+        </div>
+
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
+          <motion.h1
+            className="text-4xl sm:text-6xl font-bold text-white mb-6"
+            variants={fadeUpAnimation}
+            initial="initial"
+            animate="animate"
           >
-            <Link to="/products" className="btn-primary text-lg">
+            Sweet Moments, Perfect Celebrations
+          </motion.h1>
+          <motion.p
+            className="text-xl text-white mb-8"
+            variants={fadeUpAnimation}
+            initial="initial"
+            animate="animate"
+            transition={{ delay: 0.2 }}
+          >
+            Discover our handcrafted cakes and desserts
+          </motion.p>
+          <motion.div
+            variants={fadeUpAnimation}
+            initial="initial"
+            animate="animate"
+            transition={{ delay: 0.4 }}
+          >
+            <Button
+              variant="primary"
+              className="text-lg px-8 py-3 bg-white text-primary-600 hover:bg-gray-100"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Explore Our Collection
-            </Link>
+            </Button>
           </motion.div>
         </div>
-      </section>
+
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <div className="animate-bounce">
+            <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+          </div>
+        </motion.div>
+      </motion.section>
 
       {/* Featured Products */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="scroll-reveal text-4xl md:text-5xl font-['Playfair_Display'] font-bold text-center mb-16">
-            Featured Creations
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredProducts.map((product) => (
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={controls}
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
+            <p className="text-gray-600">Handpicked selections just for you</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, index) => (
               <motion.div
-                key={product.id}
-                className="scroll-reveal card group"
-                whileHover={{ y: -10 }}
+                key={index}
+                variants={fadeUpAnimation}
+                initial="initial"
+                animate="animate"
+                transition={{ delay: 0.1 * index }}
               >
-                <div className="relative overflow-hidden rounded-lg mb-4">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                <p className="text-primary-600 font-semibold mb-4">${product.price}</p>
-                <Link
-                  to={`/products/${product.id}`}
-                  className="inline-block btn-secondary w-full text-center"
-                >
-                  View Details
-                </Link>
+                <ProductCard
+                  product={{
+                    id: index + 1,
+                    name: 'Delicious Cake',
+                    description: 'A perfect blend of flavors that melts in your mouth.',
+                    price: 29.99,
+                    image: '/cake-image.jpg',
+                    categories: ['Birthday', 'Chocolate'],
+                    rating: 4.5,
+                    reviewCount: 128,
+                    stock: 10
+                  }}
+                />
               </motion.div>
             ))}
           </div>
@@ -148,60 +133,79 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="scroll-reveal text-4xl md:text-5xl font-['Playfair_Display'] font-bold text-center mb-16">
-            Why Choose Sweet Delights?
-          </h2>
-          
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={controls}
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Us</h2>
+            <p className="text-gray-600">What makes our cakes special</p>
+          </motion.div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="scroll-reveal card text-center">
-              <i className="fas fa-birthday-cake text-4xl text-primary-500 mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Custom Designs</h3>
-              <p className="text-gray-600">
-                Personalized cakes crafted to match your unique style and occasion
-              </p>
-            </div>
-            
-            <div className="scroll-reveal card text-center">
-              <i className="fas fa-star text-4xl text-primary-500 mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Premium Quality</h3>
-              <p className="text-gray-600">
-                Using only the finest ingredients for exceptional taste and freshness
-              </p>
-            </div>
-            
-            <div className="scroll-reveal card text-center">
-              <i className="fas fa-truck text-4xl text-primary-500 mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">On-Time Delivery</h3>
-              <p className="text-gray-600">
-                Reliable delivery service to ensure your celebrations go as planned
-              </p>
-            </div>
+            {[
+              {
+                icon: '🎂',
+                title: 'Fresh Ingredients',
+                description: 'We use only the finest and freshest ingredients in all our products.'
+              },
+              {
+                icon: '🚚',
+                title: 'Fast Delivery',
+                description: 'Same day delivery available for orders placed before 2 PM.'
+              },
+              {
+                icon: '⭐',
+                title: 'Custom Orders',
+                description: 'Create your perfect cake with our customization options.'
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                className="text-center p-6 rounded-lg bg-gray-50"
+                variants={fadeUpAnimation}
+                initial="initial"
+                animate="animate"
+                transition={{ delay: 0.2 * index }}
+              >
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 px-4 bg-primary-50">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="scroll-reveal text-4xl md:text-5xl font-['Playfair_Display'] font-bold mb-6">
-            Ready to Make Your Celebration Special?
-          </h2>
-          <p className="scroll-reveal text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Let us help you create unforgettable moments with our delicious cakes and beautiful decorations
-          </p>
+      <section className="py-16 bg-primary-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            className="scroll-reveal"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={controls}
+            className="max-w-3xl mx-auto"
           >
-            <Link to="/contact" className="btn-primary text-lg">
-              Contact Us Now
-            </Link>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Ready to Order Your Perfect Cake?
+            </h2>
+            <p className="text-white text-opacity-90 mb-8">
+              Join thousands of satisfied customers who trust us with their celebrations.
+            </p>
+            <Button
+              variant="secondary"
+              className="text-primary-600 bg-white hover:bg-gray-100"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Order Now
+            </Button>
           </motion.div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

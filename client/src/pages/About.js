@@ -1,231 +1,273 @@
 import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import Lottie from 'lottie-react';
-
-// Import baker animation JSON
-const bakerAnimation = {
-  // This is a placeholder. In production, you would import actual Lottie JSON file
-  v: "5.7.6",
-  fr: 29.9700012207031,
-  ip: 0,
-  op: 180.00000733155,
-  w: 512,
-  h: 512,
-  nm: "Baker Animation",
-  ddd: 0,
-  assets: [],
-  layers: []
-};
+import { motion, useAnimation } from 'framer-motion';
+import { fadeUpAnimation } from '../utils/animations';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { Button } from '../components/ui';
 
 const About = () => {
+  const controls = useAnimation();
+
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    controls.start({ opacity: 1, y: 0 });
+  }, [controls]);
 
-    // Parallax effect for images
-    gsap.utils.toArray('.parallax').forEach(section => {
-      const image = section.querySelector('img');
-      
-      gsap.to(image, {
-        yPercent: 20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      });
-    });
+  const teamMembers = [
+    {
+      name: 'Sarah Johnson',
+      role: 'Master Baker',
+      image: '/team/sarah.jpg',
+      description: 'With over 15 years of experience in pastry arts.',
+    },
+    {
+      name: 'Michael Chen',
+      role: 'Creative Director',
+      image: '/team/michael.jpg',
+      description: 'Award-winning cake designer and decorator.',
+    },
+    {
+      name: 'Emily Rodriguez',
+      role: 'Customer Experience',
+      image: '/team/emily.jpg',
+      description: 'Ensuring every order exceeds expectations.',
+    },
+  ];
 
-    // Animate timeline items
-    gsap.utils.toArray('.timeline-item').forEach((item, i) => {
-      gsap.from(item, {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        scrollTrigger: {
-          trigger: item,
-          start: "top 80%",
-          end: "top 20%",
-          toggleActions: "play none none reverse"
-        }
-      });
-    });
-  }, []);
-
-  const timelineEvents = [
+  const milestones = [
     {
       year: '2010',
-      title: 'Our Beginning',
-      description: 'Started as a small home-based bakery with a passion for creating delicious cakes.'
+      title: 'Founded',
+      description: 'Started our journey in a small kitchen with big dreams.',
     },
     {
       year: '2015',
-      title: 'First Store Opening',
-      description: 'Opened our first physical store, bringing our creations to a wider audience.'
+      title: 'Expansion',
+      description: 'Opened our first flagship store in the city center.',
     },
     {
       year: '2018',
-      title: 'Award-Winning Creations',
-      description: 'Recognized as the Best Cake Shop in the city, known for our unique designs.'
-    },
-    {
-      year: '2020',
-      title: 'Online Expansion',
-      description: 'Launched our e-commerce platform to serve customers nationwide.'
+      title: 'Award Winning',
+      description: 'Recognized as the Best Bakery of the Year.',
     },
     {
       year: '2023',
-      title: 'Growing Family',
-      description: 'Expanded to multiple locations while maintaining our commitment to quality.'
-    }
+      title: 'Going Digital',
+      description: 'Launched our online ordering platform.',
+    },
   ];
 
   return (
-    <div className="pt-20">
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+
       {/* Hero Section */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="parallax absolute inset-0">
-          <img
-            src="https://images.pexels.com/photos/1070850/pexels-photo-1070850.jpeg"
-            alt="Bakery interior"
-            className="w-full h-full object-cover"
+      <motion.section
+        className="relative py-20 bg-primary-600 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <div className="absolute inset-0">
+          <motion.div
+            className="absolute inset-0 bg-black opacity-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
           />
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+          <motion.img
+            src="/about-hero.jpg"
+            alt="About Us"
+            className="w-full h-full object-cover"
+            initial={{ scale: 1.2 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5 }}
+          />
         </div>
-        
-        <div className="relative z-10 text-center text-white px-4">
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="font-['Playfair_Display'] text-5xl md:text-7xl font-bold mb-6"
+            className="text-4xl sm:text-5xl font-bold text-white mb-6"
+            variants={fadeUpAnimation}
+            initial="initial"
+            animate="animate"
           >
             Our Story
           </motion.h1>
           <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="text-xl md:text-2xl max-w-2xl mx-auto"
+            className="text-xl text-white max-w-3xl mx-auto"
+            variants={fadeUpAnimation}
+            initial="initial"
+            animate="animate"
+            transition={{ delay: 0.2 }}
           >
-            Crafting sweet memories since 2010
+            Crafting sweet moments and delightful memories since 2010
           </motion.p>
         </div>
-      </section>
+      </motion.section>
 
       {/* Mission Section */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="font-['Playfair_Display'] text-4xl font-bold mb-6">
-                Our Mission
-              </h2>
-              <p className="text-gray-600 mb-6 text-lg">
-                At Sweet Delights, we believe that every celebration deserves something special. 
-                Our mission is to create not just cakes, but moments of joy that bring people together.
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={controls}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
+              <p className="text-gray-600 mb-6">
+                At Sweet Delights, we believe that every celebration deserves the perfect cake. 
+                Our mission is to create not just desserts, but memorable experiences that bring 
+                joy to our customers' special moments.
               </p>
-              <p className="text-gray-600 text-lg">
-                We take pride in using only the finest ingredients, combining traditional baking methods 
-                with innovative designs to create unique and delicious masterpieces for your special occasions.
+              <p className="text-gray-600 mb-8">
+                We combine traditional baking methods with innovative techniques, using only the 
+                finest ingredients to ensure every bite is pure delight.
               </p>
-            </div>
-            <div className="relative h-[400px]">
-              <Lottie
-                animationData={bakerAnimation}
-                className="w-full h-full"
-                loop={true}
+              <Button
+                variant="primary"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Learn More
+              </Button>
+            </motion.div>
+            <motion.div
+              className="relative h-96"
+              initial={{ opacity: 0, x: 50 }}
+              animate={controls}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <img
+                src="/mission-image.jpg"
+                alt="Our Mission"
+                className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-xl"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-['Playfair_Display'] text-4xl font-bold text-center mb-16">
-            Our Journey
-          </h2>
-          
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary-200"></div>
-            
-            {/* Timeline events */}
-            {timelineEvents.map((event, index) => (
-              <div
-                key={event.year}
-                className={`timeline-item relative flex items-center mb-12 ${
-                  index % 2 === 0 ? 'justify-start' : 'justify-end'
-                }`}
+      {/* Team Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={controls}
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
+            <p className="text-gray-600">The passionate people behind our delicious creations</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={member.name}
+                className="bg-gray-50 rounded-lg overflow-hidden"
+                variants={fadeUpAnimation}
+                initial="initial"
+                animate="animate"
+                transition={{ delay: 0.2 * index }}
               >
-                <div
-                  className={`w-full md:w-5/12 ${
-                    index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'
-                  }`}
-                >
-                  <div className="card">
-                    <span className="text-primary-500 font-bold text-xl mb-2 block">
-                      {event.year}
-                    </span>
-                    <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                    <p className="text-gray-600">{event.description}</p>
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-64 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
+                  <p className="text-primary-600 font-medium mb-3">{member.role}</p>
+                  <p className="text-gray-600">{member.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Milestones Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={controls}
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Journey</h2>
+            <p className="text-gray-600">Key milestones in our sweet adventure</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {milestones.map((milestone, index) => (
+              <motion.div
+                key={milestone.year}
+                className="relative p-6 bg-white rounded-lg shadow-sm"
+                variants={fadeUpAnimation}
+                initial="initial"
+                animate="animate"
+                transition={{ delay: 0.2 * index }}
+              >
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold">{milestone.year}</span>
                   </div>
                 </div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-500 rounded-full"></div>
-              </div>
+                <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">{milestone.title}</h3>
+                <p className="text-gray-600">{milestone.description}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Values Section */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-['Playfair_Display'] text-4xl font-bold text-center mb-16">
-            Our Values
-          </h2>
-          
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={controls}
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
+            <p className="text-gray-600">The principles that guide everything we do</p>
+          </motion.div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div
-              whileHover={{ y: -10 }}
-              className="card text-center"
-            >
-              <i className="fas fa-heart text-4xl text-primary-500 mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Passion</h3>
-              <p className="text-gray-600">
-                We pour our hearts into every creation, ensuring each cake is made with love and dedication.
-              </p>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ y: -10 }}
-              className="card text-center"
-            >
-              <i className="fas fa-gem text-4xl text-primary-500 mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Quality</h3>
-              <p className="text-gray-600">
-                Only the finest ingredients and attention to detail go into our products.
-              </p>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ y: -10 }}
-              className="card text-center"
-            >
-              <i className="fas fa-users text-4xl text-primary-500 mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Community</h3>
-              <p className="text-gray-600">
-                Building relationships and creating moments that bring people together.
-              </p>
-            </motion.div>
+            {[
+              {
+                icon: '🌟',
+                title: 'Quality',
+                description: 'We never compromise on ingredients or preparation methods.',
+              },
+              {
+                icon: '💝',
+                title: 'Passion',
+                description: 'Every creation is made with love and attention to detail.',
+              },
+              {
+                icon: '🤝',
+                title: 'Service',
+                description: 'Customer satisfaction is at the heart of our business.',
+              },
+            ].map((value, index) => (
+              <motion.div
+                key={value.title}
+                className="text-center p-6"
+                variants={fadeUpAnimation}
+                initial="initial"
+                animate="animate"
+                transition={{ delay: 0.2 * index }}
+              >
+                <div className="text-4xl mb-4">{value.icon}</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{value.title}</h3>
+                <p className="text-gray-600">{value.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
