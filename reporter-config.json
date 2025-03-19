@@ -1,0 +1,38 @@
+{
+  "reporterEnabled": "spec, mocha-junit-reporter, mochawesome",
+  "mochaJunitReporterReporterOptions": {
+    "mochaFile": "cypress/results/junit/results-[hash].xml",
+    "toConsole": false,
+    "attachments": true,
+    "jenkinsMode": true
+  },
+  "mochawesomeReporterOptions": {
+    "reportDir": "cypress/results/mochawesome",
+    "overwrite": false,
+    "html": true,
+    "json": true,
+    "timestamp": true,
+    "charts": true,
+    "reportPageTitle": "Sweet Delights Test Report",
+    "embeddedScreenshots": true,
+    "inlineAssets": true,
+    "saveAllAttempts": false,
+    "code": true,
+    "autoOpen": false,
+    "showPassed": true,
+    "showFailed": true,
+    "showPending": true,
+    "showSkipped": false,
+    "showHooks": "failed",
+    "quiet": false,
+    "reportFilename": "report-[datetime]"
+  },
+  "specReporterOptions": {
+    "suppressPassed": false,
+    "suppressFailed": false,
+    "suppressPending": false,
+    "suppressSkipped": true,
+    "showSpecTiming": true,
+    "failOnZeroTests": true
+  }
+}
